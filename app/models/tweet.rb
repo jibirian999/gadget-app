@@ -6,9 +6,14 @@ class Tweet < ApplicationRecord
   validates :user_id, presence: true
   validates :content, presence: true, length: { maximum: 140 }
 
-  # ユーザーが既にいいねしているか？
+  #ユーザーが既にいいねしているか？
   def liked_by?(user)
-    tweet_likes.exists?(user_id: user.id)
+    # 変更前
+    # tweet_likes.exists?(user_id: user.id)
+
+    # 変更後
+    tweet_likes.where(user_id: user.id).present?
+
   end
 
   # ユーザーが既にブックマークしているか？

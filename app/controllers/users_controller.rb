@@ -7,11 +7,20 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = User.find(params[:id])
-    @tweets = @user.tweets
+    # 変更前
+    # @user = User.find(params[:id])
+    # @tweets = @user.tweets
+    # @bookmarks = @user.bookmarked_tweets.reorder('tweet_bookmarks.created_at DESC')
+    # @replies = Tweet.where(reply_id: @tweets)
+    # @tweet = current_user.tweets.build
+
+    # 変更後
+    @user = User.includes(:tweets).find(params[:id])
+    @tweets = Tweet.includes(:tweet_likes, :tweet_likes).where(user_id: @user)
     @bookmarks = @user.bookmarked_tweets.reorder('tweet_bookmarks.created_at DESC')
     @replies = Tweet.where(reply_id: @tweets)
     @tweet = current_user.tweets.build
+
   end
 
   def new

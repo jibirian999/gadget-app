@@ -28,7 +28,7 @@
           <%= f.submit '投稿する', class: 'btn btn-primary' %>
         <% end %>
       </section>
-    <% if @replies.find_by(reply_id: tweet.id).present?%>
+
       <ol class="tweets">
         <% @replies.where(reply_id: tweet.id).each do |reply| %>
           <li>
@@ -43,6 +43,6 @@
           </li>
         <% end %>
       </ol>
-    <% end %>
+
   </li>
 <% end %>
