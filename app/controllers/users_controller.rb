@@ -14,12 +14,27 @@ class UsersController < ApplicationController
     # @replies = Tweet.where(reply_id: @tweets)
     # @tweet = current_user.tweets.build
 
-    # 変更後
+    # # 変更後
+    # @user = User.includes(:tweets).find(params[:id])
+    # @tweets = Tweet.includes(:tweet_likes).where(user_id: @user)
+    # @bookmarks = @user.bookmarked_tweets.reorder('tweet_bookmarks.created_at DESC')
+    # @replies = Tweet.where(reply_id: @tweets)
+    # @tweet = current_user.tweets.build
+
+    # # 試行1
+    # @user = User.includes(:tweets).find(params[:id])
+    # @tweets = Tweet.includes(:tweet_likes).where(user_id: @user)
+    # @bookmarks = @user.bookmarked_tweets.reorder('tweet_bookmarks.created_at DESC')
+    # @replies = Tweet.where(reply_id: @tweets)
+    # @tweet = current_user.tweets.build    
+
+    # 試行2
     @user = User.includes(:tweets).find(params[:id])
-    @tweets = Tweet.includes(:tweet_likes, :tweet_likes).where(user_id: @user)
-    @bookmarks = @user.bookmarked_tweets.reorder('tweet_bookmarks.created_at DESC')
+    @tweets = Tweet.includes(:tweet_likes, :tweet_bookmarks).where(user_id: @user)
+    @bookmarks = @user.bookmarked_tweets.includes(:tweet_likes, :tweet_bookmarks).reorder('tweet_bookmarks.created_at DESC')
     @replies = Tweet.where(reply_id: @tweets)
-    @tweet = current_user.tweets.build
+    @tweet = current_user.tweets.build    
+    
 
   end
 

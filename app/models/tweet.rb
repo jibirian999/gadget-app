@@ -11,13 +11,18 @@ class Tweet < ApplicationRecord
     # 変更前
     # tweet_likes.exists?(user_id: user.id)
 
-    # 変更後
-    tweet_likes.where(user_id: user.id).present?
+    # # 変更後
+    # tweet_likes.where(user_id: user.id).present?
+
+    # 試行1
+    tweet_likes.pluck(:user_id).include?(user.id)
 
   end
 
   # ユーザーが既にブックマークしているか？
   def bookmarked_by?(user)
-    tweet_bookmarks.exists?(user_id: user.id)
+    # tweet_bookmarks.exists?(user_id: user.id)
+    tweet_bookmarks.pluck(:user_id).include?(user.id)
+
   end
 end
